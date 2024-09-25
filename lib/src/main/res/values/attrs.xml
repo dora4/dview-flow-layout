@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FlowLayout">
+        <attr name="dview_fl_lineChildCount" format="integer|reference" />
+        <attr name="dview_fl_spanSize" format="dimension|reference" />
+    </declare-styleable>
+</resources>
