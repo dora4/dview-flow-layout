@@ -2,6 +2,10 @@ dview-flow-layout
 ![Release](https://jitpack.io/v/dora4/dview-flow-layout.svg)
 --------------------------------
 
+#### 卡片
+
+![Dora视图_容器喷射者-](https://github.com/user-attachments/assets/17ee5b8c-73b6-4c90-8a3b-fc935890b939)
+
 #### Gradle依赖配置
 
 ```groovy
