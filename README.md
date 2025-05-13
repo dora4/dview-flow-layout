@@ -3,8 +3,7 @@ dview-flow-layout
 --------------------------------
 
 #### 卡片
-
-![DORA视图 排列灵阵](https://github.com/user-attachments/assets/9123bdc8-ee28-4b05-8a3e-4fb8701ff89f)
+![DORA视图 排列灵阵](https://github.com/user-attachments/assets/9bf35e61-a9b3-4989-b3b3-f55588db2fb6)
 ![DORA视图 秩序使者](https://github.com/user-attachments/assets/5c1d0016-9ede-4ec9-92ca-400585f29d1c)
 
 
