@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import dora.widget.flowlayout.R
 
-
 class FlowLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -56,9 +55,10 @@ class FlowLayout @JvmOverloads constructor(
                 }
                 continue
             }
-            measureChild(child, widthMeasureSpec, heightMeasureSpec)
-            val lp = child
-                .layoutParams as LayoutParams
+            val lp = child.layoutParams as LayoutParams
+            val childWidthSpec = getChildMeasureSpec(widthMeasureSpec, paddingLeft + paddingRight, lp.width)
+            val childHeightSpec = getChildMeasureSpec(heightMeasureSpec, paddingTop + paddingBottom, lp.height)
+            child.measure(childWidthSpec, childHeightSpec)
             val childWidth = (child.measuredWidth + lp.leftMargin
                     + lp.rightMargin)
             val childHeight = (child.measuredHeight + lp.topMargin
@@ -78,8 +78,8 @@ class FlowLayout @JvmOverloads constructor(
             }
         }
         setMeasuredDimension(
-            if (widthMode == View.MeasureSpec.EXACTLY) widthSize else width + paddingLeft + paddingRight,
-            if (heightMode == View.MeasureSpec.EXACTLY) heightSize else height + paddingTop + paddingBottom
+            if (widthMode == MeasureSpec.EXACTLY) widthSize else width + paddingLeft + paddingRight,
+            if (heightMode == MeasureSpec.EXACTLY) heightSize else height + paddingTop + paddingBottom
         )
     }
 
@@ -157,15 +157,15 @@ class FlowLayout @JvmOverloads constructor(
     }
 
     override fun generateLayoutParams(attrs: AttributeSet): LayoutParams {
-        //解析子控件中定义的自己的属性
+        // 解析子控件中定义的自己的属性
         return LayoutParams(context, attrs)
     }
 
-    class LayoutParams : ViewGroup.MarginLayoutParams {
+    class LayoutParams : MarginLayoutParams {
         var lineChildCount = -1
 
         constructor(c: Context, attrs: AttributeSet?) : super(c, attrs) {
-            //获取配置在子控件上，ViewGroup自身的自定义属性
+            // 获取配置在子控件上，ViewGroup自身的自定义属性
             val a = c.obtainStyledAttributes(attrs, R.styleable.FlowLayout)
             if (a.hasValue(R.styleable.FlowLayout_dview_fl_lineChildCount)) {
                 lineChildCount = a.getInt(R.styleable.FlowLayout_dview_fl_lineChildCount, -1)
