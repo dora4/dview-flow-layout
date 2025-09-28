@@ -78,28 +78,24 @@ class FlowLayout @JvmOverloads constructor(
             }
         }
         setMeasuredDimension(
-            if (widthMode == MeasureSpec.EXACTLY) widthSize else width + paddingLeft + paddingRight,
-            if (heightMode == MeasureSpec.EXACTLY) heightSize else height + paddingTop + paddingBottom
+            if (widthMode == MeasureSpec.EXACTLY) widthSize
+            else width + paddingLeft + paddingRight,
+            if (heightMode == MeasureSpec.EXACTLY) heightSize
+            else height + paddingTop + paddingBottom
         )
     }
 
     private fun getScreenWidth(): Int {
-        val w = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val d = w.defaultDisplay
-        val metrics = DisplayMetrics()
-        d.getMetrics(metrics)
-        var widthPixels = metrics.widthPixels
-        if (Build.VERSION.SDK_INT >= 14 && Build.VERSION.SDK_INT < 17) try {
-            widthPixels = Display::class.java.getMethod("getRawWidth").invoke(d) as Int
-        } catch (ignored: Exception) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            wm.currentWindowMetrics.bounds.width()
+        } else {
+            val metrics = DisplayMetrics()
+            @Suppress("DEPRECATION")
+            (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager)
+                .defaultDisplay.getMetrics(metrics)
+            metrics.widthPixels
         }
-        if (Build.VERSION.SDK_INT >= 17) try {
-            val realSize = Point()
-            Display::class.java.getMethod("getRealSize", Point::class.java).invoke(d, realSize)
-            widthPixels = realSize.x
-        } catch (ignored: Exception) {
-        }
-        return widthPixels
     }
 
     override fun addView(child: View, index: Int, params: ViewGroup.LayoutParams) {
@@ -108,7 +104,12 @@ class FlowLayout @JvmOverloads constructor(
                 val width = getScreenWidth()
                 val childWidth =
                     (width - (params.lineChildCount + 1) * spanSize) / params.lineChildCount
-                params.setMargins(spanSize / 2, spanSize / 2, spanSize / 2, spanSize / 2)
+                params.setMargins(
+                    if (params.leftMargin == 0) spanSize / 2 else params.leftMargin,
+                    if (params.topMargin == 0) spanSize / 2 else params.topMargin,
+                    if (params.rightMargin == 0) spanSize / 2 else params.rightMargin,
+                    if (params.bottomMargin == 0) spanSize / 2 else params.bottomMargin
+                )
                 params.width = childWidth
             }
             super.addView(child, index, params)
