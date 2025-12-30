@@ -6,11 +6,10 @@ plugins {
 
 android {
     namespace = "dora.widget.flowlayout"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 34
     }
     buildTypes {
         release {
@@ -25,7 +24,7 @@ android {
 }
 
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("androidx.appcompat:appcompat:1.7.1")
 }
 
 afterEvaluate {
